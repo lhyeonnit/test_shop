@@ -22,7 +22,8 @@
 
 	<link rel="stylesheet" href="css/flaticon.css">
 	<link rel="stylesheet" href="css/icomoon.css">
-	<link rel="stylesheet" href="css/style.css">
+	<?php $v_txt = time(); ?>
+	<link rel="stylesheet" href="css/style.css?v=<?= $v_txt ?>">
 </head>
 
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
