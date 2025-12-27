@@ -1,4 +1,4 @@
-<?php include_once("../inc/head.php"); ?>
+<?php include_once("./inc/head.php"); ?>
 <div class="container sub-page">
 
     <!-- 요청을 하면 localhost:8080/login POST로 요청됨
@@ -40,4 +40,4 @@
         <!--로그인 폼 박스-->
     </div>
 </div>
-<?php include_once("../inc/tail.php"); ?>
+<?php include_once("./inc/tail.php"); ?>
