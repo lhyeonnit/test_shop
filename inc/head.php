@@ -37,7 +37,7 @@
 			<div class="collapse navbar-collapse" id="ftco-nav">
 				<ul class="navbar-nav nav ml-auto">
 					<li class="nav-item"><a href="#products-section" class="nav-link"><span>products</span></a></li>
-                    <li class="nav-item"><a href="/admin/login.php" class="nav-link"><span>admin</span></a></li>
+                    <li class="nav-item"><a href="/adm_login.php" class="nav-link"><span>admin</span></a></li>
 				</ul>
 			</div>
 		</div>
