@@ -1,13 +1,14 @@
 <?php include_once("./inc/head.php"); ?>
-<section class="ftco-section" id="products-section">
-	<div class="container">
-		<div class="row justify-content-center mb-5 pb-5">
-			<div class="col-md-7 heading-section text-center ftco-animate">
-				<h1 class="big big-2">Products</h1>
-				<h2 class="mb-4">All Products</h2>
-				<p>모든 상품을 확인해보세요.</p>
-			</div>
+
+<div class="container">
+	<div class="row justify-content-center mb-5 pb-5">
+		<div class="col-md-7 heading-section text-center ftco-animate">
+			<h1 class="big big-2">Products</h1>
+			<h2 class="mb-4">All Products</h2>
+			<p>모든 상품을 확인해보세요.</p>
 		</div>
+	</div>
+	<section class="ftco-section" id="products-section">
 		<div class="row d-flex">
 			<div class="col-md-4 d-flex ftco-animate">
 				<div class="blog-entry justify-content-end">
@@ -67,6 +68,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
+</div>
 <?php include_once("./inc/tail.php"); ?>

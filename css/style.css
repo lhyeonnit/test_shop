@@ -9583,6 +9583,16 @@ textarea.form-control {
       color: #000000;
       font-style: italic; }
 
+.login-table{}
+.login-table th {padding: 15px;}
+
+.login-box p{
+    border-bottom:1px solid #ddd;
+    text-align: end;
+    padding: 10px;
+}
+.login-table input, .login input{height: var(--height);}
+
 #ftco-loader {
   position: fixed;
   width: 96px;
