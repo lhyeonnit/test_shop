@@ -5,6 +5,7 @@
 			<div class="col-md-7 heading-section text-center ftco-animate">
 				<h1 class="big big-2">Products</h1>
 				<h2 class="mb-4">All Products</h2>
+				<p>모든 상품을 확인해보세요.</p>
 			</div>
 		</div>
 		<div class="row d-flex">
