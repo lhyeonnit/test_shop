@@ -33,7 +33,7 @@
 
                     </table>
                     <!--로그인-->
-                    <button type="button" id="login_btn" class="btn login-btn form-control ft-18">로그인</button>
+                    <button type="button" id="login_btn" class="btn btn-primary py-3 px-5">로그인</button>
                     <!--로그인-->
                 </form>
             </div>

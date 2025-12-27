@@ -9586,7 +9586,7 @@ textarea.form-control {
 .login-table{}
 .login-table th {padding: 15px;}
 
-.login-box p{
+.login-box{
     border-bottom:1px solid #ddd;
     text-align: -webkit-center;
     padding: 10px;
@@ -9594,14 +9594,7 @@ textarea.form-control {
     
 }
 .login-table input, .login input{height: var(--height);}
-.login-btn{
-    color: rgb(255, 255, 255) !important;
-    background: rgb(226, 161, 111);
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: rgb(226, 161, 111) !important;
-    border-image: initial !important;
-}
+
 #ftco-loader {
   position: fixed;
   width: 96px;
