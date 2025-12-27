@@ -1,6 +1,6 @@
 <?php 
 include_once("./inc/head.php");
-session_start();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_POST['mt_id'] === 'admin' && $_POST['mt_pwd'] === '1234!') {
         $_SESSION['is_admin'] = true;
@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $login_error = '아이디 또는 비밀번호가 올바르지 않습니다.';
     }
 }
-?>
 ?>
 <section class="ftco-section" id="admin-section">
     <div class="container">
