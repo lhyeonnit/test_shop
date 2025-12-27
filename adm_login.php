@@ -7,7 +7,7 @@
 				<h2 class="mb-4">관리자 로그인</h2>
 			</div>
 		</div>
-        <div class="card" style="width:600px; margin: 0 auto;">
+        <div class="card">
             <!--로그인 폼 박스-->
             <div class="login-box">
                 <form method="post" name="frm_form" id="frm_form" action="">
@@ -33,7 +33,7 @@
 
                     </table>
                     <!--로그인-->
-                    <button type="button" id="login_btn" class="btn btn-dark-blue form-control ft-18">로그인</button>
+                    <button type="button" id="login_btn" class="btn login-btn form-control ft-18">로그인</button>
                     <!--로그인-->
                 </form>
             </div>
