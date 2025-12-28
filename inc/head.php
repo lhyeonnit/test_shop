@@ -24,6 +24,8 @@
 	<link rel="stylesheet" href="css/icomoon.css">
 	<?php $v_txt = time(); ?>
 	<link rel="stylesheet" href="css/style.css?v=<?= $v_txt ?>">
+	<script src="js/jquery.min.js"></script>
+
 </head>
 
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">

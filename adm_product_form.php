@@ -74,9 +74,13 @@ if ($act === 'update' && $idx > 0) {
                                     if (!$img) continue;
                                     ?>
                                     <div class="form-group upload_img_item preview_item existing img_del_div" data-slot="<?= $slot ?>">
+                                        <input type="hidden" name="existing_img[<?= $slot ?>]" value="<?= htmlspecialchars($img) ?>">
                                         <input type="hidden" name="del_img[<?= $slot ?>]" class="del-flag" value="0">
-                                        <img src="" alt="이미지">
-                                        <button type="button" class="btn btn-link btn-sm img_del_btn" onclick="deletePreview(this)">X</button>
+                                        <label class="square">
+                                            <img src="<?= htmlspecialchars($img) ?>" alt="이미지">
+                                            <button type="button"
+                                                    class="btn btn-link btn-sm img_del_btn"
+                                                    onclick="deletePreview(this)">X</button>
                                         </label>
                                     </div>
                                     <?php endfor; ?>
@@ -91,14 +95,14 @@ if ($act === 'update' && $idx > 0) {
                             <div class="form-group row align-items-center">
                                 <label for="" class="col-sm-2 col-form-label">상품 가격</label>
                                 <div class="col-sm-2 d-flex align-items-end">
-                                    <input type="number" id="pt_price" name="pt_price" class="form-control" max="1000000" min="1000" step="1" value="<?= $row["pt_price"] ?>">
+                                    <input type="number" id="pt_price" name="pt_price" class="form-control" max="1000000" min="1000" step="100" value="<?= $row["pt_price"] ?>">
                                     <span>원</span>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center">
                                 <label for="" class="col-sm-2 col-form-label">상품 수량</label>
                                 <div class="col-sm-2 d-flex align-items-end">
-                                    <input type="number" id="pt_stock" name="pt_stock" class="form-control" max="100" min="1" step="10" value="<?= $row["pt_stock"] ?>">
+                                    <input type="number" id="pt_stock" name="pt_stock" class="form-control" max="100" min="0" step="10" value="<?= $row["pt_stock"] ?>">
                                     <span>개</span>
                                 </div>
                             </div>
@@ -288,6 +292,7 @@ if ($act === 'update' && $idx > 0) {
         product_update();
     })
 })();
+
 function product_update(){
     $('#input_file').prop('disabled', false);
 
@@ -305,12 +310,12 @@ function product_update(){
         // async: false,
         cache: false,
         success: function (response) {
-            $("#next_btn").attr("disabled", true);
-            common_toast_pop(response);
-            setTimeout(function() {
-                var url = "/adm_products.php";
-                $(location).attr('href',url);
-            },300)
+            if (response.result) {
+                alert(response.msg);
+                location.href = "/adm_products.php";
+            } else {
+                alert(response.msg);
+            }
         },
     });
 
