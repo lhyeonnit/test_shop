@@ -5,6 +5,9 @@ function active($file, $current) {
 }
 ?>
 <style>
+    .admin-layout {
+        min-height: 100vh;
+    }
     /* 사이드바 */
     .sidebar {
         position: fixed;
@@ -44,11 +47,25 @@ function active($file, $current) {
         color: #fff;
         border-left-color: #084298;
     }
-</style>
-<aside class="sidebar">
-    <div class="sidebar-title">메뉴</div>
 
-    <a class="side-item <?php if($num == 1) {echo "active";} ?>" href="/adm_products.php">상품 목록</a>
-    <a class="side-item <?php if($num == 2) {echo "active";} ?>" href="/adm_payments.php">결제 내역</a>
-    <a class="side-item <?php if($num == 3) {echo "active";} ?>" href="/adm_cancels.php">취소 내역</a>
-</aside>
+    .main {
+        margin-left: 260px;
+        padding: 24px;
+    }
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 220px;
+        }
+        .main {
+            margin-left: 220px;
+        }
+    }
+</style>
+<div class="admin-layout">
+    <aside class="sidebar">
+        <div class="sidebar-title">메뉴</div>
+
+        <a class="side-item <?php if($num == 1) {echo "active";} ?>" href="/adm_products.php">상품 목록</a>
+        <a class="side-item <?php if($num == 2) {echo "active";} ?>" href="/adm_payments.php">결제 내역</a>
+        <a class="side-item <?php if($num == 3) {echo "active";} ?>" href="/adm_cancels.php">취소 내역</a>
+    </aside>
