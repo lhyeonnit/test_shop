@@ -4,7 +4,7 @@ include_once("./inc/head.php");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_POST['mt_id'] === 'admin' && $_POST['mt_pwd'] === '1234!') {
         $_SESSION['is_admin'] = true;
-        header('Location: adm_index.php');
+        header('Location: adm_products.php');
         exit;
     } else {
         $login_error = '아이디 또는 비밀번호가 올바르지 않습니다.';
