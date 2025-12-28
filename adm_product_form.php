@@ -48,34 +48,32 @@ if (empty($_SESSION['is_admin'])) {
                             </div>
                             <div class="form-group row align-items-center">
                                 <label for="" class="col-sm-2 col-form-label">상품 가격</label>
-                                <div class="col-sm-3">
-                                    <input type="text" id="" name="" class="form-control" placeholder="상품 가격을 입력해주세요" maxlength="10" value="">
-                                    <span>원</span>
+                                <div class="col-sm-2">
+                                    <input type="text" id="" name="" class="form-control" maxlength="10" value="">
+                                    <span class="input-group-text">원</span>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center">
                                 <label for="" class="col-sm-2 col-form-label">상품 수량</label>
-                                <div class="col-sm-4">
-                                    <input type="text" id="" name="" class="form-control" placeholder="상품명을 입력해주세요" maxlength="3" value="">
-                                    <span>개</span>
+                                <div class="col-sm-2">
+                                    <input type="text" id="" name="" class="form-control" maxlength="3" value="">
+                                    <span class="input-group-text">개</span>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center">
                                 <label for="" class="col-sm-2 col-form-label">판매 상태</label>
                                 <div class="col-sm-10">
-                                    <input type="hidden" name="pt_show" id="pt_show" value="Y" />
+                                    <input type="hidden" name="" id="" value="1" />
                                     <div class="btn-group" role="group" aria-label="pt_show">
-                                        <button type="button" onclick="f_pt_show('Y');" id="f_pt_show_btn1" class="btn btn-outline-secondary btn-info text-white">노출함</button>
-                                        <button type="button" onclick="f_pt_show('N');" id="f_pt_show_btn2" class="btn btn-outline-secondary">노출안함</button>
+                                        <button type="button" onclick="" class="btn btn-outline-secondary btn-info text-white">판매중</button>
+                                        <button type="button" onclick="" class="btn btn-outline-secondary">품절</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="fixed-bottom">
-                                <p class="p-3 mt-3 text-center">
-                                    <input type="submit" value="" class="btn btn-info" />
-                                    <input type="button" value="목록" onclick="location.href=''" class="btn btn-outline-secondary mx-2" />
-                                </p>
-                            </div>
+                            <p class="p-3 mt-3 text-center">
+                                <input type="button" value="확인" class="btn btn-info" />
+                                <input type="button" value="목록" onclick="location.href=''" class="btn btn-outline-secondary mx-2" />
+                            </p>
                         </form>
                     </div>
                 </div>
