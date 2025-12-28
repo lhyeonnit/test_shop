@@ -9594,7 +9594,16 @@ textarea.form-control {
     
 }
 .login-table input, .login input{height: var(--height);}
-
+.media {
+	display: flex;
+	align-items: flex-start;
+}
+.media img {
+    width: 64px !important;
+    height: 64px !important;
+    object-fit: contain;
+    border-radius: 0 !important;
+}
 #ftco-loader {
   position: fixed;
   width: 96px;

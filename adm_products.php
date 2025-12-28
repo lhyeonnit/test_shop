@@ -47,11 +47,12 @@ include_once("./inc/adm_sidebar.php");
                                     <input type="button" class="btn btn-outline-danger btn-sm" value="삭제" onclick="" />
                                 </td>
                                 <td>
-                                    <div class="media product_list_media">
-                                        <img src="" onerror="this.src=''" class="align-self-center mr-3" alt="">
+                                    <div class="media">
+                                        <img src="/images/image_2.jpg" onerror="this.src=''" class="mr-3" alt="">
                                         <div class="mr-3">
                                             <small class="mt-2">상품명</small>
-                                            <span class="text-info">가격</span>
+                                            <p class="text-dark">상품내용</p>
+                                            <p class="text-info">가격</p>
                                         </div>
                                     </div>
                                 </td>
