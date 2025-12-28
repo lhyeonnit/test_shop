@@ -1,6 +1,6 @@
 <?php 
 include_once("./inc/head.php");
-include_once("/adm_sidebar.php"); 
+include_once("./inc/adm_sidebar.php"); 
 if (empty($_SESSION['is_admin'])) {
     header('Location: adm_login.php');
     exit;
