@@ -1,9 +1,3 @@
-<?php
-$current = basename($_SERVER['PHP_SELF']); // ex) products.php
-function active($file, $current) {
-  return $file === $current ? 'active text-primary' : 'text-dark';
-}
-?>
 <style>
     .admin-layout {
         min-height: 100vh;
@@ -61,7 +55,7 @@ function active($file, $current) {
         }
     }
 </style>
-<section class="ftco-section" id="products-section">
+<section class="ftco-section" style="padding: 0;">
     <div class="admin-layout">
         <aside class="sidebar">
             <div class="sidebar-title">메뉴</div>
