@@ -48,30 +48,30 @@ if (empty($_SESSION['is_admin'])) {
                             </div>
                             <div class="form-group row align-items-center">
                                 <label for="" class="col-sm-2 col-form-label">상품 가격</label>
-                                <div class="col-sm-2">
-                                    <input type="text" id="" name="" class="form-control" maxlength="10" value="">
-                                    <span class="input-group-text">원</span>
+                                <div class="col-sm-2 d-flex align-items-end">
+                                    <input type="text" id="" name="" class="form-control" maxlength="7" value="">
+                                    <span>원</span>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center">
                                 <label for="" class="col-sm-2 col-form-label">상품 수량</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-2 d-flex align-items-end">
                                     <input type="text" id="" name="" class="form-control" maxlength="3" value="">
-                                    <span class="input-group-text">개</span>
+                                    <span>개</span>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center">
                                 <label for="" class="col-sm-2 col-form-label">판매 상태</label>
                                 <div class="col-sm-10">
                                     <input type="hidden" name="" id="" value="1" />
-                                    <div class="btn-group" role="group" aria-label="pt_show">
+                                    <div class="btn-group" role="group" aria-label="">
                                         <button type="button" onclick="" class="btn btn-outline-secondary btn-info text-white">판매중</button>
                                         <button type="button" onclick="" class="btn btn-outline-secondary">품절</button>
                                     </div>
                                 </div>
                             </div>
                             <p class="p-3 mt-3 text-center">
-                                <input type="button" value="확인" class="btn btn-info" />
+                                <input type="button" value="확인" class="btn btn-dark" />
                                 <input type="button" value="목록" onclick="location.href=''" class="btn btn-outline-secondary mx-2" />
                             </p>
                         </form>
