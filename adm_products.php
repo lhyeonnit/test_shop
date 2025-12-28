@@ -15,7 +15,7 @@ if (empty($_SESSION['is_admin'])) {
                     </div>
                 </div>
                 <div class="py-3" style="justify-self: end;">
-                    <input type="button" class="btn btn-info ml-2" value="상품 등록" onclick="location.href='/adm_product_form.php'" />
+                    <input type="button" class="btn btn-info ml-2" value="상품 등록" onclick="location.href='/adm_product_form.php?act='" />
                 </div>
                 <div class="table-responsive">
                     <table class="table table-striped table-hover table-bordered">

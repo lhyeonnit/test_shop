@@ -6,73 +6,114 @@ if (empty($_SESSION['is_admin'])) {
     header('Location: adm_login.php');
     exit;
 }
+$row = [
+    'pt_name'    => '',
+    'pt_price'   => '',
+    'pt_stock'   => '',
+    'pt_content' => '',
+    'pt_status'  => '',
+    'pt_img1'    => '',
+    'pt_img2'    => '',
+    'pt_img3'    => '',
+];
+$act = $_GET['act'] ?? 'input';
+$idx = isset($_GET['idx']) ? (int)$_GET['idx'] : 0;
+$productImgs = [];
+if ($act === 'update' && $idx > 0) {
+    $found = pdo_select($db, 'product_t', '*', ['idx' => $idx], ['fetch' => 'one']);
+    if (is_array($found)) {
+        $row = array_merge($row, $found);
+        $_act = "update";
+        $_act_txt = "수정";
+        // $productImgs = array_values(array_filter([
+        //     $row['pt_img1'] ?? '',
+        //     $row['pt_img2'] ?? '',
+        //     $row['pt_img3'] ?? '',
+        // ]));
+        $productImgs = [1 => $row['pt_img1'], 2 => $row['pt_img2'], 3 => $row['pt_img3']];
+    } else {
+        $_act = "input";
+        $_act_txt = "등록";
+    }
+} else {
+    $_act = "input";
+    $_act_txt = "등록";
+}
 ?>
         <div class="main">
             <div class="container">
                 <div class="row justify-content-center pb-5">
                     <div class="col-md-7 heading-section text-center ftco-animate">
                         <h1 class="big big-2">Admin</h1>
-                        <h4 class="mb-4">상품 등록/수정</h4>
+                        <h4 class="mb-4">상품 <?= $_act_txt ?></h4>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body">
                         <form method="post" name="frm_form" id="frm_form" action="" target="hidden_ifrm" enctype="multipart/form-data">
+                            <input type="hidden" name="act" id="act" value="<?=$_act?>" />
+                            <input type="hidden" name="idx" id="idx" value="<?=$idx?>" />
                             <div class="form-group row align-items-center">
                                 <label for="" class="col-sm-2 col-form-label">상품명</label>
                                 <div class="col-sm-10">
-                                    <input type="text" id="" name="" class="form-control" placeholder="상품명을 입력해주세요" maxlength="20" value="">
+                                    <input type="text" id="pt_name" name="pt_name" class="form-control" placeholder="상품명을 입력해주세요" maxlength="20" value="<?= $row["pt_name"] ?>">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center">
-                                <label class="col-sm-2 col-form-label">이미지 <span id="">(0/3)</span></label>
-                                <div id="file_list_div" class="upload_img_wrap">
-                                    <div class="form-group upload_img_item">
-                                        <label for="input_file" class="file_upload square"><i class="xi-plus-circle"></i>파일선택</label>
+                                <label class="col-sm-2 col-form-label">이미지 <span id="img_count">(0/3)</span></label>
+                                <div class="upload_img_wrap" id="upload_wrap">
+                                    <div class="form-group upload_img_item upload_btn" id="upload_btn">
+                                        <label for="input_file" class="file_upload square">
+                                            <i class="xi-plus-circle"></i>파일선택
+                                        </label>
                                         <input type="file" name="input_file[]" id="input_file" value="파일추가" class="d-none" oninput="" accept="image/*" multiple="multiple">
                                     </div>
-                                    <div class="form-group upload_img_item img_del_div" >
-                                        <input type="hidden" name="img_file_idx[]" value="" accept="image/*">
-                                        <label class="square">
-                                            <img src="" alt="이미지">
-                                            <button class="btn btn-link btn-sm btn_delete img_del_btn"><i class="xi-close text-white"></i></button>
+                                    <!-- 기존 이미지 미리보기(오른쪽으로 나열) -->
+                                    <?php for ($slot=1; $slot<=3; $slot++): 
+                                    $img = $productImgs[$slot] ?? '';
+                                    if (!$img) continue;
+                                    ?>
+                                    <div class="form-group upload_img_item preview_item existing img_del_div" data-slot="<?= $slot ?>">
+                                        <input type="hidden" name="del_img[<?= $slot ?>]" class="del-flag" value="0">
+                                        <img src="" alt="이미지">
+                                        <button type="button" class="btn btn-link btn-sm img_del_btn" onclick="deletePreview(this)">X</button>
                                         </label>
                                     </div>
+                                    <?php endfor; ?>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center">
                                 <label for="" class="col-sm-2 col-form-label">상품 내용</label>
                                 <div class="col-sm-10">
-                                    <textarea id="content" name="content" class="form-control" placeholder="상품 내용을 입력해주세요" rows="3"></textarea>
+                                    <textarea id="pt_content" name="pt_content" class="form-control" placeholder="상품 내용을 입력해주세요" rows="3"><?= $row["pt_content"] ?></textarea>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center">
                                 <label for="" class="col-sm-2 col-form-label">상품 가격</label>
                                 <div class="col-sm-2 d-flex align-items-end">
-                                    <input type="text" id="" name="" class="form-control" maxlength="7" value="">
+                                    <input type="number" id="pt_price" name="pt_price" class="form-control" max="1000000" min="1000" step="1" value="<?= $row["pt_price"] ?>">
                                     <span>원</span>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center">
                                 <label for="" class="col-sm-2 col-form-label">상품 수량</label>
                                 <div class="col-sm-2 d-flex align-items-end">
-                                    <input type="text" id="" name="" class="form-control" maxlength="3" value="">
+                                    <input type="number" id="pt_stock" name="pt_stock" class="form-control" max="100" min="1" step="10" value="<?= $row["pt_stock"] ?>">
                                     <span>개</span>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center">
-                                <label for="" class="col-sm-2 col-form-label">판매 상태</label>
-                                <div class="col-sm-10">
-                                    <input type="hidden" name="" id="" value="1" />
-                                    <div class="btn-group" role="group" aria-label="">
-                                        <button type="button" onclick="" class="btn btn-outline-secondary btn-info text-white">판매중</button>
-                                        <button type="button" onclick="" class="btn btn-outline-secondary">품절</button>
-                                    </div>
+                                <label for="pt_status" class="col-sm-2 col-form-label">판매 상태</label>
+                                <div class="col-sm-2">
+                                    <select name="pt_status" id="pt_status" class="form-control form-control-sm">
+                                        <option value="1" <? if($row["pt_status"] == '1'){echo 'selected';} ?>>판매중</option>
+                                        <option value="0" <? if($row["pt_status"] == '0'){echo 'selected';} ?>>판매종료</option>
+                                    </select>
                                 </div>
                             </div>
                             <p class="p-3 mt-3 text-center">
-                                <input type="button" value="확인" class="btn btn-dark" />
-                                <input type="button" value="목록" onclick="location.href=''" class="btn btn-outline-secondary mx-2" />
+                                <input type="button" value="확인" id="next_btn" class="btn btn-dark" />
+                                <input type="button" value="목록" onclick="location.href='/adm_products.php'" class="btn btn-outline-secondary mx-2" />
                             </p>
                         </form>
                     </div>
@@ -82,4 +123,198 @@ if (empty($_SESSION['is_admin'])) {
         </div>
     </div>
 </section>
+<script>
+(function(){
+    const max = 3;
+    const input = document.getElementById('input_file');
+    const wrap = document.getElementById('upload_wrap');
+    const countEl = document.getElementById('img_count');
+    const uploadBtn = document.getElementById('upload_btn');
+
+    // 신규 파일을 누적 관리(삭제 가능하게)
+    let selectedFiles = [];
+
+    function getExistingCount() {
+        // 기존 이미지 중 "삭제 표시(del-flag=1)" 아닌 것만 카운트
+        const existing = wrap.querySelectorAll('.preview_item.existing');
+        let cnt = 0;
+        existing.forEach(el => {
+        const flag = el.querySelector('.del-flag');
+        if (!flag || flag.value !== '1') cnt++;
+        });
+        return cnt;
+    }
+
+    function getNewCount() {
+        return selectedFiles.length;
+    }
+
+    function getTotalCount() {
+        return getExistingCount() + getNewCount();
+    }
+
+    function updateUIState() {
+        const total = getTotalCount();
+        countEl.textContent = `(${total}/${max})`;
+
+        // 3개 꽉 차면 업로드 버튼 비활성화(선택은 막되, UI는 남겨둠)
+        if (total >= max) {
+        input.disabled = true;
+        uploadBtn.classList.add('disabled');
+        uploadBtn.style.opacity = '0.5';
+        uploadBtn.style.pointerEvents = 'none';
+        } else {
+        input.disabled = false;
+        uploadBtn.classList.remove('disabled');
+        uploadBtn.style.opacity = '';
+        uploadBtn.style.pointerEvents = '';
+        }
+    }
+
+    function rebuildInputFiles() {
+        // selectedFiles -> input.files로 반영
+        const dt = new DataTransfer();
+        selectedFiles.forEach(f => dt.items.add(f));
+        input.files = dt.files;
+    }
+
+    function makeNewPreview(file, index) {
+        const div = document.createElement('div');
+        div.className = 'form-group upload_img_item preview_item new img_del_div';
+        div.dataset.newIndex = String(index);
+
+        const label = document.createElement('label');
+        label.className = 'square';
+
+        const img = document.createElement('img');
+        img.alt = '이미지';
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn btn-link btn-sm img_del_btn';
+        btn.textContent = 'X';
+        btn.addEventListener('click', () => deletePreview(btn));
+
+        label.appendChild(img);
+        label.appendChild(btn);
+        div.appendChild(label);
+
+        // 파일선택칸(uploadBtn) "오른쪽"에 추가되게: uploadBtn 뒤에 insert
+        // wrap은 [uploadBtn][기존/신규 미리보기...] 구조라, appendChild 하면 항상 오른쪽에 붙음
+        wrap.appendChild(div);
+
+        // 미리보기 로딩
+        const reader = new FileReader();
+        reader.onload = (e) => { img.src = e.target.result; };
+        reader.readAsDataURL(file);
+
+        return div;
+    }
+
+    input.addEventListener('change', function(){
+        const incoming = Array.from(this.files || []);
+        if (incoming.length === 0) return;
+
+        const remain = max - getTotalCount();
+        if (remain <= 0) {
+        // 이미 꽉 참: 그냥 무시 + input 비움
+        this.value = '';
+        updateUIState();
+        return;
+        }
+
+        // 남은 자리만큼만 추가, 나머지는 무시
+        const toAdd = incoming.slice(0, remain);
+
+        toAdd.forEach(file => {
+        selectedFiles.push(file);
+        // 현재 selectedFiles 길이-1이 방금 추가된 인덱스
+        makeNewPreview(file, selectedFiles.length - 1);
+        });
+
+        // input.files를 selectedFiles로 재구성 (삭제 기능 위해 필수)
+        rebuildInputFiles();
+
+        // 혹시 초과 선택을 했다면 알려줄 수도 있음(원하면)
+        if (incoming.length > remain) {
+        // 요구사항: "무시" -> 알림 없이 조용히 무시해도 되고,
+        // 필요하면 아래 주석을 해제
+        // alert(`이미지는 최대 ${max}개까지 가능합니다. 초과 파일은 제외했어요.`);
+        }
+
+        // 원본 change 파일리스트는 우리가 재구성했으니 value는 그대로 둬도 OK
+        updateUIState();
+    });
+
+    // 전역 함수로 호출되고 있으니 window에 등록
+    window.deletePreview = function(btn){
+        const item = btn.closest('.img_del_div');
+        if (!item) return;
+
+        // 1) 기존 이미지인 경우: del-flag = 1로 표시하고 숨김
+        if (item.classList.contains('existing')) {
+        const flag = item.querySelector('.del-flag');
+        if (flag) flag.value = '1';
+        item.style.display = 'none';
+        updateUIState();
+        return;
+        }
+
+        // 2) 신규 이미지인 경우: selectedFiles에서 제거 + DOM 제거 + input.files 재구성
+        if (item.classList.contains('new')) {
+        // new preview들은 DOM 순서로 인덱스가 꼬일 수 있으니, "현재 new 목록 기준"으로 제거
+        const newItems = Array.from(wrap.querySelectorAll('.preview_item.new'));
+        const idx = newItems.indexOf(item); // selectedFiles에서도 같은 순서로 유지되게 만들었음
+
+        if (idx >= 0) {
+            selectedFiles.splice(idx, 1);
+        }
+        item.remove();
+
+        // 남은 new 프리뷰들의 dataset 인덱스 재정렬(옵션)
+        const remainNew = Array.from(wrap.querySelectorAll('.preview_item.new'));
+        remainNew.forEach((el, i) => el.dataset.newIndex = String(i));
+
+        rebuildInputFiles();
+        updateUIState();
+        return;
+        }
+    };
+
+    // 최초 카운트 세팅(기존 이미지 반영)
+    updateUIState();
+
+    $('#next_btn').on('click',function(){
+        product_update();
+    })
+})();
+function product_update(){
+    $('#input_file').prop('disabled', false);
+
+    var form = $('#frm_form')[0];
+    var formData = new FormData(form);
+    formData.append('act','product_update');
+
+    $.ajax({
+        url: "/ajax/ajax_product.php",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: "json",
+        // async: false,
+        cache: false,
+        success: function (response) {
+            $("#next_btn").attr("disabled", true);
+            common_toast_pop(response);
+            setTimeout(function() {
+                var url = "/adm_products.php";
+                $(location).attr('href',url);
+            },300)
+        },
+    });
+
+}
+</script>
+
 <?php include_once("./inc/tail.php"); ?>
