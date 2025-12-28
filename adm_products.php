@@ -1,5 +1,6 @@
 <?php 
 include_once("./inc/head.php");
+$num = 1;
 include_once("./inc/adm_sidebar.php"); 
 ?>
 <div class="container">
@@ -36,7 +37,7 @@ include_once("./inc/adm_sidebar.php");
             <tbody>
                 <tr>
                     <td class="text-center">
-                        <?=$counts?>
+                        번호
                     </td>
                     <td class="text-center">
                         <input type="button" class="btn btn-outline-primary btn-sm" value="수정" onclick="location.href=''" />
