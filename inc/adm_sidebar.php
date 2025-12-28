@@ -10,7 +10,7 @@ function active($file, $current) {
     }
     /* 사이드바 */
     .sidebar {
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
         width: 260px;          /* 원하는 고정 가로 길이 */
