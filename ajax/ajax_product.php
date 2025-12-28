@@ -119,11 +119,10 @@ if (($_POST['act'] ?? '') === 'product_update') {
             'pt_stock'   => $pt_stock,
             'pt_content' => $pt_content,
             'pt_status'  => $pt_status,
-            'updated_at' => date('Y-m-d H:i:s'),
         ], [
             'idx' => $pt_idx
         ], allowedColumns: [
-            'pt_name','pt_price','pt_stock','pt_content','pt_status','updated_at'
+            'pt_name','pt_price','pt_stock','pt_content','pt_status'
         ]);
 
         if ($ok === false) {
@@ -137,17 +136,20 @@ if (($_POST['act'] ?? '') === 'product_update') {
     $delFlags     = $_POST['pt_img_del'] ?? [];
 
     $kept = [];
-    if (is_array($existingImgs) && is_array($delFlags)) {
-        $n = min(count($existingImgs), count($delFlags));
-        for ($i = 0; $i < $n; $i++) {
-            $img = trim((string)$existingImgs[$i]);
-            $del = (string)$delFlags[$i];
+    if (is_array($existingImgs)) {
+        foreach ($existingImgs as $slot => $img) {
+            $img = trim((string)$img);
             if ($img === '') continue;
 
+            // 삭제 플래그 확인
+            $del = (string)($delFlags[$slot] ?? '0');
+
             if ($del === '1') {
-                continue;
+                continue; // 삭제 대상 → 유지 안 함
             }
-            $kept[] = $img;
+
+            // 유지
+            $kept[$slot] = $img;
         }
     }
 
@@ -199,6 +201,55 @@ if (($_POST['act'] ?? '') === 'product_update') {
     ]);
     exit;
 }
+
+
+if (($_POST['act'] ?? '') === 'product_delete') {
+
+    $pt_idx = (int)($_POST['idx'] ?? 0);
+
+    if ($pt_idx <= 0) {
+        echo json_encode(['result'=>false,'msg'=>'잘못된 요청입니다.']);
+        exit;
+    }
+
+    // 삭제 전 이미지 경로 조회
+    $row = pdo_select(
+        $db,
+        'product_t',
+        ['pt_img1', 'pt_img2', 'pt_img3'],
+        ['idx' => $pt_idx],
+        ['fetch' => 'one']
+    );
+
+
+    if (!$row) {
+        echo json_encode(['result'=>false,'msg'=>'이미 삭제되었거나 존재하지 않습니다.']);
+        exit;
+    }
+
+        $imgs = [$row['pt_img1'], $row['pt_img2'], $row['pt_img3']];
+
+    foreach ($imgs as $img) {
+        if (!$img) continue;
+
+        // 보안: uploads 폴더만 삭제
+        if (str_starts_with($img, '/uploads/')) {
+            $absPath = $_SERVER['DOCUMENT_ROOT'] . $img;
+            if (is_file($absPath)) {
+                @unlink($absPath);
+            }
+        }
+    }
+
+    pdo_delete($db, 'product_t', ['idx' => $pt_idx]);
+
+    echo json_encode([
+        'result' => true,
+        'msg'    => '삭제되었습니다.'
+    ]);
+    exit;
+}
+
 
 echo json_encode(['result'=>false,'msg'=>'Invalid request']);
 exit;

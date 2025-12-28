@@ -53,8 +53,8 @@ $counts = count($list);
                                     <?= $counts ?>
                                 </td>
                                 <td class="text-center align-content-center">
-                                    <input type="button" class="btn btn-outline-primary btn-sm" value="수정" onclick="location.href=''" />
-                                    <input type="button" class="btn btn-outline-danger btn-sm" value="삭제" onclick="" />
+                                    <input type="button" class="btn btn-outline-primary btn-sm" value="수정" onclick="location.href='/adm_product_form.php?act=update&idx=<?= htmlspecialchars($pt_row['idx'] ?? 0) ?>'" />
+                                    <input type="button" class="btn btn-outline-danger btn-sm" value="삭제" onclick="deleteProduct(<?= $pt_row['idx'] ?>)" />
                                 </td>
                                 <td>
                                     <div class="media">
@@ -62,12 +62,12 @@ $counts = count($list);
                                         <div class="mr-3">
                                             <small class="mt-2"><?= htmlspecialchars($pt_row['pt_name'] ?? '') ?></small>
                                             <p class="text-dark"><?= htmlspecialchars($pt_row['pt_content'] ?? '') ?></p>
-                                            <p class="text-info"><?= htmlspecialchars($pt_row['pt_price'] ?? 0) ?></p>
+                                            <p class="text-info"><?= htmlspecialchars($pt_row['pt_price'] ?? 0) ?>원</p>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="text-center align-content-center">
-                                    <?= $pt_row['pt_stock'] ?>
+                                    <?= $pt_row['pt_stock'] ?>개
                                 </td>
                                 <td class="text-center align-content-center">
                                     <?php if($pt_row['pt_status'] == 1){
@@ -96,4 +96,28 @@ $counts = count($list);
         </div>
     </div>
 </section>
+<script>
+function deleteProduct(idx) {
+    if (!confirm('정말 삭제하시겠습니까?')) return;
+
+    $.ajax({
+        url: '/ajax/ajax_product.php',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            act: 'product_delete',
+            idx: idx
+        },
+        success: function (res) {
+            if (res.result) {
+                alert(res.msg);
+                location.reload(); 
+            } else {
+                alert(res.msg);
+            }
+        }
+    });
+}
+</script>
+
 <?php include_once("./inc/tail.php"); ?>

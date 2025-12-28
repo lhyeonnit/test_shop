@@ -12,9 +12,6 @@ $row = [
     'pt_stock'   => '',
     'pt_content' => '',
     'pt_status'  => '',
-    'pt_img1'    => '',
-    'pt_img2'    => '',
-    'pt_img3'    => '',
 ];
 $act = $_GET['act'] ?? 'input';
 $idx = isset($_GET['idx']) ? (int)$_GET['idx'] : 0;
@@ -74,8 +71,8 @@ if ($act === 'update' && $idx > 0) {
                                     if (!$img) continue;
                                     ?>
                                     <div class="form-group upload_img_item preview_item existing img_del_div" data-slot="<?= $slot ?>">
-                                        <input type="hidden" name="existing_img[<?= $slot ?>]" value="<?= htmlspecialchars($img) ?>">
-                                        <input type="hidden" name="del_img[<?= $slot ?>]" class="del-flag" value="0">
+                                        <input type="hidden" name="pt_img_existing[<?= $slot ?>]" value="<?= htmlspecialchars($img) ?>">
+                                        <input type="hidden" name="pt_img_del[<?= $slot ?>]" class="del-flag" value="0">
                                         <label class="square">
                                             <img src="<?= htmlspecialchars($img) ?>" alt="이미지">
                                             <button type="button"
@@ -110,8 +107,8 @@ if ($act === 'update' && $idx > 0) {
                                 <label for="pt_status" class="col-sm-2 col-form-label">판매 상태</label>
                                 <div class="col-sm-2">
                                     <select name="pt_status" id="pt_status" class="form-control form-control-sm">
-                                        <option value="1" <? if($row["pt_status"] == '1'){echo 'selected';} ?>>판매중</option>
-                                        <option value="0" <? if($row["pt_status"] == '0'){echo 'selected';} ?>>판매종료</option>
+                                        <option value="1" <?php if($row["pt_status"] == '1'){echo 'selected';} ?>>판매중</option>
+                                        <option value="0" <?php if($row["pt_status"] == '0'){echo 'selected';} ?>>판매종료</option>
                                     </select>
                                 </div>
                             </div>
@@ -161,7 +158,7 @@ if ($act === 'update' && $idx > 0) {
         const total = getTotalCount();
         countEl.textContent = `(${total}/${max})`;
 
-        // 3개 꽉 차면 업로드 버튼 비활성화(선택은 막되, UI는 남겨둠)
+        // 3개 꽉 차면 업로드 버튼 비활성화
         if (total >= max) {
         input.disabled = true;
         uploadBtn.classList.add('disabled');
@@ -203,8 +200,6 @@ if ($act === 'update' && $idx > 0) {
         label.appendChild(btn);
         div.appendChild(label);
 
-        // 파일선택칸(uploadBtn) "오른쪽"에 추가되게: uploadBtn 뒤에 insert
-        // wrap은 [uploadBtn][기존/신규 미리보기...] 구조라, appendChild 하면 항상 오른쪽에 붙음
         wrap.appendChild(div);
 
         // 미리보기 로딩
@@ -236,17 +231,9 @@ if ($act === 'update' && $idx > 0) {
         makeNewPreview(file, selectedFiles.length - 1);
         });
 
-        // input.files를 selectedFiles로 재구성 (삭제 기능 위해 필수)
+        // input.files를 selectedFiles로 재구성
         rebuildInputFiles();
 
-        // 혹시 초과 선택을 했다면 알려줄 수도 있음(원하면)
-        if (incoming.length > remain) {
-        // 요구사항: "무시" -> 알림 없이 조용히 무시해도 되고,
-        // 필요하면 아래 주석을 해제
-        // alert(`이미지는 최대 ${max}개까지 가능합니다. 초과 파일은 제외했어요.`);
-        }
-
-        // 원본 change 파일리스트는 우리가 재구성했으니 value는 그대로 둬도 OK
         updateUIState();
     });
 
@@ -268,14 +255,13 @@ if ($act === 'update' && $idx > 0) {
         if (item.classList.contains('new')) {
         // new preview들은 DOM 순서로 인덱스가 꼬일 수 있으니, "현재 new 목록 기준"으로 제거
         const newItems = Array.from(wrap.querySelectorAll('.preview_item.new'));
-        const idx = newItems.indexOf(item); // selectedFiles에서도 같은 순서로 유지되게 만들었음
-
+        const idx = newItems.indexOf(item); 
         if (idx >= 0) {
             selectedFiles.splice(idx, 1);
         }
         item.remove();
 
-        // 남은 new 프리뷰들의 dataset 인덱스 재정렬(옵션)
+        // 남은 new 프리뷰들의 dataset 인덱스 재정렬
         const remainNew = Array.from(wrap.querySelectorAll('.preview_item.new'));
         remainNew.forEach((el, i) => el.dataset.newIndex = String(i));
 
