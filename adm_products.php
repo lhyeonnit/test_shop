@@ -6,6 +6,9 @@ if (empty($_SESSION['is_admin'])) {
     header('Location: adm_login.php');
     exit;
 }
+$text = '';
+$list = pdo_select($db, 'product_t', '*', [], ['fetch' => 'all']);
+$counts = count($list);
 ?>
         <div class="main">
             <div class="container">
@@ -42,9 +45,12 @@ if (empty($_SESSION['is_admin'])) {
                             </tr>
                         </thead>
                         <tbody>
+                            <?php if($list){ 
+                                foreach($list as $pt_row) {
+                            ?>
                             <tr>
                                 <td class="text-center align-content-center">
-                                    번호
+                                    <?= $counts ?>
                                 </td>
                                 <td class="text-center align-content-center">
                                     <input type="button" class="btn btn-outline-primary btn-sm" value="수정" onclick="location.href=''" />
@@ -52,27 +58,37 @@ if (empty($_SESSION['is_admin'])) {
                                 </td>
                                 <td>
                                     <div class="media">
-                                        <img src="/images/image_2.jpg" onerror="this.src=''" class="mr-3" alt="">
+                                        <img src="<?= htmlspecialchars($pt_row['pt_img1'] ?? '' )?>" class="mr-3" alt="pt_img1">
                                         <div class="mr-3">
-                                            <small class="mt-2">상품명</small>
-                                            <p class="text-dark">상품내용</p>
-                                            <p class="text-info">가격</p>
+                                            <small class="mt-2"><?= htmlspecialchars($pt_row['pt_name'] ?? '') ?></small>
+                                            <p class="text-dark"><?= htmlspecialchars($pt_row['pt_content'] ?? '') ?></p>
+                                            <p class="text-info"><?= htmlspecialchars($pt_row['pt_price'] ?? 0) ?></p>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="text-center align-content-center">
-                                    재고
+                                    <?= $pt_row['pt_stock'] ?>
                                 </td>
                                 <td class="text-center align-content-center">
-                                    판매상태
+                                    <?php if($pt_row['pt_status'] == 1){
+                                        $text = "판매중";
+                                    } else {
+                                        $text = "판매종료";
+                                    } ?>
+                                    <?= $text ?>
                                 </td>
                                 <td class="text-center align-content-center">
-                                    등록일시
+                                    <?= date('Y-m-d', strtotime($pt_row['created_at'] ?? '')) ?>
                                 </td>
                             </tr>
+                            <?php 
+                                $counts--;
+                                }
+                            } else { ?>
                             <tr>
                                 <td colspan="6" class="text-center align-content-center"><b>자료가 없습니다.</b></td>
                             </tr>
+                            <?php } ?>
                         </tbody>
                     </table>
                 </div>
